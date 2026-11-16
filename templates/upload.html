@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Ders Notu Paylaş • Selçuk Bilgisayar Mühendisliği{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="upload-card-wrapper">
+            
+            <!-- Başlık ve Yönlendirme -->
+            <div class="text-center mb-4">
+                <a href="{{ url_for('index') }}" class="btn btn-sm btn-link text-decoration-none text-muted mb-2">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Not Havuzuna Geri Dön
+                </a>
+                <h1 class="h2 fw-bold text-dark">Ders Notu & Kaynak Paylaş</h1>
+                <p class="text-muted">
+                    Hazırladığın ders özetlerini, formül kartlarını ve çözümlü soruları paylaşarak Selçuk Üniversitesi Bilgisayar Mühendisliği öğrencileri arasındaki dayanışmaya güç kat.
+                </p>
+            </div>
+
+            <!-- Kart Formu -->
+            <div class="bg-white rounded-4 border p-4 p-md-5 shadow-sm">
+                <form id="noteUploadForm" method="POST" action="{{ url_for('api_upload') }}" enctype="multipart/form-data">
+
+                    <!-- SÜRÜKLE & BIRAK DOSYA YÜKLEME ALANI -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-dark">
+                            <i class="fa-solid fa-file-arrow-up text-teal me-1"></i> Belge Dosyası (PDF veya Görsel) *
+                        </label>
+
+                        <div class="dropzone-container" id="uploadDropzone">
+                            <input 
+                                type="file" 
+                                id="noteFileInput" 
+                                name="file" 
+                                accept=".pdf,.jpg,.jpeg,.png" 
+                                class="d-none" 
+                                required
+                            >
+                            
+                            <div class="dropzone-prompt">
+                                <div class="dropzone-icon">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                </div>
+                                <h3 class="h6 fw-bold text-dark mb-1">Dosyayı buraya sürükleyin veya seçmek için tıklayın</h3>
+                                <p class="text-muted small mb-0">Desteklenen Formatlar: <strong>PDF, JPG, JPEG, PNG</strong> (Maksimum: <strong>25 MB</strong>)</p>
+                            </div>
+
+                            <!-- Seçilen Dosya Önizleme Alanı -->
+                            <div class="selected-file-preview" id="filePreview">
+                                <div class="d-flex align-items-center gap-3">
+                                    <i class="fa-solid fa-file-circle-check fs-2 text-teal"></i>
+                                    <div class="text-start">
+                                        <div class="fw-bold text-dark text-truncate" id="fileNameDisplay" style="max-width: 320px;"></div>
+                                        <div class="text-muted small" id="fileSizeDisplay"></div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-danger" id="btnRemoveFile" title="Dosyayı Kaldır">
+                                    <i class="fa-solid fa-trash-can me-1"></i> Kaldır
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DERS KODU VE DERS ADI -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-5">
+                            <label for="course_code" class="form-label fw-bold small text-dark">Ders Kodu *</label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="course_code" 
+                                name="course_code" 
+                                placeholder="Örn: BIL201" 
+                                list="courseSuggestions"
+                                required
+                                autocomplete="off"
+                            >
+                            <datalist id="courseSuggestions">
+                                <option value="BIL101">BIL101 - Programlamaya Giriş</option>
+                                <option value="BIL103">BIL103 - Bilgisayar Mühendisliğine Giriş</option>
+                                <option value="BIL105">BIL105 - Matematik I</option>
+                                <option value="BIL107">BIL107 - Fizik I</option>
+                                <option value="BIL102">BIL102 - Nesne Yönelimli Programlama</option>
+                                <option value="BIL104">BIL104 - Matematik II</option>
+                                <option value="BIL201">BIL201 - Veri Yapıları</option>
+                                <option value="BIL203">BIL203 - Sayısal Mantık Tasarımı</option>
+                                <option value="BIL205">BIL205 - Diferansiyel Denklemler</option>
+                                <option value="BIL202">BIL202 - Algoritma Analizi</option>
+                                <option value="BIL204">BIL204 - Elektrik ve Elektronik Devreler</option>
+                                <option value="BIL301">BIL301 - İşletim Sistemleri</option>
+                                <option value="BIL303">BIL303 - Veritabanı Sistemleri</option>
+                                <option value="BIL305">BIL305 - Bilgisayar Mimarisi</option>
+                                <option value="BIL302">BIL302 - Bilgisayar Ağları</option>
+                                <option value="BIL304">BIL304 - Yazılım Mühendisliği</option>
+                                <option value="BIL306">BIL306 - Web Teknolojileri</option>
+                                <option value="BIL401">BIL401 - Makine Öğrenmesi</option>
+                                <option value="BIL403">BIL403 - Derleyici Tasarımı</option>
+                                <option value="BIL405">BIL405 - Dağıtık Sistemler</option>
+                                <option value="BIL407">BIL407 - Yapay Zeka</option>
+                                <option value="BIL402">BIL402 - Bilgi Güvenliği ve Kriptoloji</option>
+                            </datalist>
+                        </div>
+                        <div class="col-md-7">
+                            <label for="course_name" class="form-label fw-bold small text-dark">Ders Adı *</label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="course_name" 
+                                name="course_name" 
+                                placeholder="Örn: Veri Yapıları" 
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- SINIF VE SINAV TÜRÜ -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="class_level" class="form-label fw-bold small text-dark">Sınıf Düzeyi *</label>
+                            <select class="form-select filter-select" id="class_level" name="class_level" required>
+                                <option value="" disabled selected>Sınıf Seviyesi Seçiniz</option>
+                                <option value="1">1. Sınıf</option>
+                                <option value="2">2. Sınıf</option>
+                                <option value="3">3. Sınıf</option>
+                                <option value="4">4. Sınıf</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="exam_type" class="form-label fw-bold small text-dark">Sınav Dönemi / Türü *</label>
+                            <select class="form-select filter-select" id="exam_type" name="exam_type" required>
+                                <option value="" disabled selected>Sınav Türü Seçiniz</option>
+                                <option value="Vize">Vize Sınavı Notu</option>
+                                <option value="Final">Final Sınavı Notu</option>
+                                <option value="Genel">Genel Ders Özeti & Formül Kartı</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- NOT BAŞLIĞI -->
+                    <div class="mb-3">
+                        <label for="title" class="form-label fw-bold small text-dark">Not Başlığı *</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="title" 
+                            name="title" 
+                            placeholder="Örn: Ağaç Yapıları ve Rotasyon Algoritmaları Vize Özeti" 
+                            required
+                        >
+                    </div>
+
+                    <!-- EK AÇIKLAMA -->
+                    <div class="mb-4">
+                        <label for="description" class="form-label fw-bold small text-dark">Kısa Açıklama (İsteğe Bağlı)</label>
+                        <textarea 
+                            class="form-control" 
+                            id="description" 
+                            name="description" 
+                            rows="3" 
+                            placeholder="Notun içeriği, hangi haftaları veya konuları kapsadığı hakkında kısa bilgi..."
+                        ></textarea>
+                    </div>
+
+                    <!-- KVKK / DAYANIŞMA İLKESİ BİLGİLENDİRME KUTUSU -->
+                    <div class="kvkk-info-box mb-4">
+                        <i class="fa-solid fa-shield-halved fs-5 mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Dayanışma ve İçerik İlkeleri:</strong>
+                            <p class="mb-0 mt-1">
+                                Lütfen telif hakkı ihlali oluşturan ticari kitap taramaları veya üçüncü şahıslara ait kişisel veri (T.C. Kimlik Numarası, telefon numarası, kişisel imza vb.) içeren belgeler yüklemeyiniz. Yalnızca öğrencilerin kendi hazırladığı çalışma notları ve açık özetler paylaşılmalıdır.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- GÖNDER BUTONU -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary-action py-3 fs-6" id="btnSubmitUpload">
+                            <i class="fa-solid fa-cloud-arrow-up me-2"></i> Notu Doğrula ve Dayanışma Havuzuna Ekle
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}
