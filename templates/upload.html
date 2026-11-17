@@ -62,53 +62,59 @@
                         </div>
                     </div>
 
-                    <!-- DERS KODU VE DERS ADI -->
+                    <!-- BÖLÜM VE DERS SEÇİMİ (BOLOGNA ENTEGRASYONLU) -->
                     <div class="row g-3 mb-3">
                         <div class="col-md-5">
-                            <label for="course_code" class="form-label fw-bold small text-dark">
-                                Ders Kodu * <span class="badge bg-light text-teal border ms-1">Bologna Uyumlu</span>
+                            <label for="departmentSelect" class="form-label fw-bold small text-dark">
+                                <i class="fa-solid fa-building-columns text-teal me-1"></i> Mühendislik Bölümü *
                             </label>
-                            <input 
-                                type="text" 
-                                class="form-control" 
-                                id="course_code" 
-                                name="course_code" 
-                                placeholder="Örn: 3301156 veya BIL101" 
-                                list="courseSuggestions"
-                                required
-                                autocomplete="off"
-                            >
-                            <datalist id="courseSuggestions">
-                                {% if bologna_courses %}
-                                    {% for c in bologna_courses %}
-                                    <option value="{{ c.code }}">{{ c.code }} - {{ c.name }} ({{ c.class_level }}. Sınıf)</option>
-                                    {% endfor %}
-                                {% else %}
-                                    <option value="3301156">3301156 - BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ</option>
-                                    <option value="3301151">3301151 - MATEMATİK-1</option>
-                                    <option value="3301256">3301256 - PROGRAMLAMA DİLİ-1</option>
-                                    <option value="3301351">3301351 - NESNEYE YÖNELİK PROGRAMLAMA DİLİ</option>
-                                    <option value="3301354">3301354 - VERİ YAPILARI VE UYGULAMALARI</option>
-                                    <option value="3301454">3301454 - VERİTABANI YÖNETİM SİSTEMLERİ</option>
-                                    <option value="3301551">3301551 - MİKROİŞLEMCİLER VE MİKRODENETLEYİCİLER</option>
-                                    <option value="3301651">3301651 - YAPAY ZEKA</option>
-                                    <option value="3301786">3301786 - TOPLUMA HİZMET UYGULAMALARI</option>
-                                {% endif %}
-                            </datalist>
-                            <div class="form-text small text-muted">
-                                Selçuk Üniversitesi Bologna ders kodunu (3301...) veya adını yazmaya başladığınızda otomatik önerilir.
-                            </div>
+                            <select class="form-select filter-select" id="departmentSelect" name="department" required>
+                                <option value="" disabled selected>Bölüm Seçiniz</option>
+                                <option value="Bilgisayar Mühendisliği">Bilgisayar Mühendisliği</option>
+                                <option value="Elektrik-Elektronik Mühendisliği">Elektrik-Elektronik Mühendisliği</option>
+                                <option value="Makine Mühendisliği">Makine Mühendisliği</option>
+                            </select>
                         </div>
                         <div class="col-md-7">
-                            <label for="course_name" class="form-label fw-bold small text-dark">Ders Adı *</label>
-                            <input 
-                                type="text" 
-                                class="form-control" 
-                                id="course_name" 
-                                name="course_name" 
-                                placeholder="Ders kodu girildiğinde otomatik dolar" 
-                                required
-                            >
+                            <label for="courseSelect" class="form-label fw-bold small text-dark">
+                                <i class="fa-solid fa-book-bookmark text-teal me-1"></i> Ders Seçiniz *
+                            </label>
+                            <select class="form-select filter-select" id="courseSelect" disabled required>
+                                <option value="">-- Önce Bölüm Seçiniz --</option>
+                            </select>
+                            <div class="form-text small text-muted">
+                                Dersi seçtiğinizde resmi Bologna ders kodu ve sınıfı otomatik gelecektir.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OTOMATİK DOLDURULAN DERS DETAYLARI (GÖRSEL BİLGİ ALANI) -->
+                    <div class="p-3 bg-light rounded-3 border mb-3" id="courseAutoInfo" style="display: none;">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-sm-4">
+                                <span class="text-muted small">Resmi Ders Kodu:</span>
+                                <div class="fw-bold text-dark font-monospace" id="displayCourseCode">-</div>
+                                <input type="hidden" id="course_code" name="course_code" value="">
+                            </div>
+                            <div class="col-sm-8">
+                                <span class="text-muted small">Seçilen Ders Adı:</span>
+                                <div class="fw-bold text-dark" id="displayCourseName">-</div>
+                                <input type="hidden" id="course_name" name="course_name" value="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MANUEL DERS GİRİŞ ALANI (İSTEĞE BAĞLI YEDEK) -->
+                    <div id="manualCourseFields" style="display: none;" class="mb-3 p-3 bg-warning-subtle rounded-3 border border-warning">
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <label for="manual_course_code" class="form-label small fw-bold">Ders Kodu (İsteğe Bağlı)</label>
+                                <input type="text" class="form-control form-control-sm" id="manual_course_code" placeholder="Örn: 3301151">
+                            </div>
+                            <div class="col-md-8">
+                                <label for="manual_course_name" class="form-label small fw-bold">Ders Adı *</label>
+                                <input type="text" class="form-control form-control-sm" id="manual_course_name" placeholder="Dersin tam adını yazınız">
+                            </div>
                         </div>
                     </div>
 
@@ -184,4 +190,127 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+const facultyCourses = {{ faculty_courses | tojson | safe }};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const deptSelect = document.getElementById('departmentSelect');
+    const courseSelect = document.getElementById('courseSelect');
+    const courseAutoInfo = document.getElementById('courseAutoInfo');
+    const displayCode = document.getElementById('displayCourseCode');
+    const displayName = document.getElementById('displayCourseName');
+    const hiddenCode = document.getElementById('course_code');
+    const hiddenName = document.getElementById('course_name');
+    const classLevelSelect = document.getElementById('class_level');
+    const manualFields = document.getElementById('manualCourseFields');
+    const manualCode = document.getElementById('manual_course_code');
+    const manualName = document.getElementById('manual_course_name');
+
+    // Bölüm değiştiğinde
+    deptSelect.addEventListener('change', () => {
+        const selectedDept = deptSelect.value;
+        courseSelect.innerHTML = '<option value="">-- Dersi Seçiniz --</option>';
+        courseSelect.disabled = true;
+        courseAutoInfo.style.display = 'none';
+        manualFields.style.display = 'none';
+        hiddenCode.value = '';
+        hiddenName.value = '';
+
+        if (!selectedDept) return;
+
+        let matchedDeptKey = null;
+        for (const [key, data] of Object.entries(facultyCourses)) {
+            if (data.department_name === selectedDept) {
+                matchedDeptKey = key;
+                break;
+            }
+        }
+
+        if (matchedDeptKey && facultyCourses[matchedDeptKey].courses) {
+            const courses = facultyCourses[matchedDeptKey].courses;
+            courses.sort((a, b) => a.semester - b.semester || a.code.localeCompare(b.code));
+
+            const groups = { 1: [], 2: [], 3: [], 4: [] };
+            courses.forEach(c => {
+                if (groups[c.class_level]) {
+                    groups[c.class_level].push(c);
+                }
+            });
+
+            for (let lvl = 1; lvl <= 4; lvl++) {
+                if (groups[lvl] && groups[lvl].length > 0) {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = `${lvl}. Sınıf Dersleri`;
+                    groups[lvl].forEach(c => {
+                        const opt = document.createElement('option');
+                        opt.value = c.code;
+                        opt.textContent = `${c.name} (${c.code})`;
+                        opt.dataset.name = c.name;
+                        opt.dataset.level = c.class_level;
+                        optgroup.appendChild(opt);
+                    });
+                    courseSelect.appendChild(optgroup);
+                }
+            }
+
+            // Listede olmayan özel ders seçeneği
+            const customGroup = document.createElement('optgroup');
+            customGroup.label = "Diğer / Özel";
+            const customOpt = document.createElement('option');
+            customOpt.value = "CUSTOM";
+            customOpt.textContent = "+ Listede Olmayan Özel Bir Ders Gir...";
+            customGroup.appendChild(customOpt);
+            courseSelect.appendChild(customGroup);
+
+            courseSelect.disabled = false;
+        }
+    });
+
+    // Ders seçildiğinde
+    courseSelect.addEventListener('change', () => {
+        const val = courseSelect.value;
+        if (!val) {
+            courseAutoInfo.style.display = 'none';
+            manualFields.style.display = 'none';
+            hiddenCode.value = '';
+            hiddenName.value = '';
+            return;
+        }
+
+        if (val === 'CUSTOM') {
+            courseAutoInfo.style.display = 'none';
+            manualFields.style.display = 'block';
+            hiddenCode.value = manualCode.value.trim().toUpperCase() || 'GENEL';
+            hiddenName.value = manualName.value.trim();
+
+            manualCode.addEventListener('input', () => {
+                hiddenCode.value = manualCode.value.trim().toUpperCase() || 'GENEL';
+            });
+            manualName.addEventListener('input', () => {
+                hiddenName.value = manualName.value.trim();
+            });
+            return;
+        }
+
+        manualFields.style.display = 'none';
+        const selectedOption = courseSelect.options[courseSelect.selectedIndex];
+        const courseName = selectedOption.dataset.name;
+        const classLevel = selectedOption.dataset.level;
+
+        displayCode.textContent = val;
+        displayName.textContent = courseName;
+        hiddenCode.value = val;
+        hiddenName.value = courseName;
+
+        if (classLevel && classLevelSelect) {
+            classLevelSelect.value = classLevel;
+        }
+
+        courseAutoInfo.style.display = 'block';
+    });
+});
+</script>
 {% endblock %}

@@ -11,6 +11,7 @@ class Note(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
+    department = db.Column(db.String(100), default='Bilgisayar Mühendisliği', nullable=False, index=True) # Bölüm
     course_code = db.Column(db.String(20), nullable=False, index=True)
     course_name = db.Column(db.String(150), nullable=False)
     class_level = db.Column(db.Integer, nullable=False, index=True)  # 1, 2, 3 veya 4
@@ -30,9 +31,10 @@ class Note(db.Model):
         self, title, course_code, course_name, class_level, exam_type,
         file_path, file_type, file_size=0, description=None,
         download_count=0, upvotes=0, downvotes=0, report_count=0,
-        is_approved=False, created_at=None
+        is_approved=False, department='Bilgisayar Mühendisliği', created_at=None
     ):
         self.title = title
+        self.department = department
         self.course_code = course_code
         self.course_name = course_name
         self.class_level = class_level
@@ -101,6 +103,7 @@ class Note(db.Model):
         return {
             'id': self.id,
             'title': self.title,
+            'department': self.department,
             'course_code': self.course_code,
             'course_name': self.course_name,
             'class_level': self.class_level,

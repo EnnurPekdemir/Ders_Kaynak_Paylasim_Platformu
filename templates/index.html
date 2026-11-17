@@ -80,15 +80,25 @@
             <form method="GET" action="{{ url_for('index') }}" id="filterForm">
                 <div class="row g-3">
                     
+                    <!-- Bölüm Filtresi -->
+                    <div class="col-lg-3 col-md-6">
+                        <select name="department" class="form-select filter-select">
+                            <option value="">Tüm Bölümler (Fakülte Geneli)</option>
+                            <option value="Bilgisayar Mühendisliği" {% if current_department == 'Bilgisayar Mühendisliği' or current_department == 'ceng' %}selected{% endif %}>Bilgisayar Mühendisliği</option>
+                            <option value="Elektrik-Elektronik Mühendisliği" {% if current_department == 'Elektrik-Elektronik Mühendisliği' or current_department == 'ee' %}selected{% endif %}>Elektrik-Elektronik Mühendisliği</option>
+                            <option value="Makine Mühendisliği" {% if current_department == 'Makine Mühendisliği' or current_department == 'me' %}selected{% endif %}>Makine Mühendisliği</option>
+                        </select>
+                    </div>
+
                     <!-- Arama Çubuğu -->
-                    <div class="col-lg-4 col-md-12">
+                    <div class="col-lg-3 col-md-6">
                         <div class="search-input-wrapper">
                             <i class="fa-solid fa-magnifying-glass search-icon"></i>
                             <input 
                                 type="text" 
                                 name="q" 
                                 class="form-control form-control-search" 
-                                placeholder="Ders kodu, ders adı veya konu ara... (örn: BIL201)" 
+                                placeholder="Ders kodu, adı veya konu ara..." 
                                 value="{{ current_search }}"
                                 autocomplete="off"
                             >
@@ -116,17 +126,8 @@
                         </select>
                     </div>
 
-                    <!-- Dosya Formatı Filtresi -->
-                    <div class="col-lg-2 col-md-4 col-sm-6">
-                        <select name="file_type" class="form-select filter-select">
-                            <option value="">Tüm Dosyalar</option>
-                            <option value="pdf" {% if current_file_type == 'pdf' %}selected{% endif %}>PDF Belgeleri</option>
-                            <option value="image" {% if current_file_type == 'image' %}selected{% endif %}>Görseller (PNG/JPG)</option>
-                        </select>
-                    </div>
-
-                    <!-- Sıralama -->
-                    <div class="col-lg-2 col-md-12 col-sm-6 d-flex gap-2">
+                    <!-- Sıralama & Buton -->
+                    <div class="col-lg-2 col-md-4 col-sm-12 d-flex gap-2">
                         <select name="sort" class="form-select filter-select">
                             <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>En Yeni</option>
                             <option value="popular" {% if current_sort == 'popular' %}selected{% endif %}>En Çok İndirilen</option>
@@ -136,13 +137,23 @@
                             <i class="fa-solid fa-filter"></i>
                         </button>
                     </div>
+
+                </div>
+                            <i class="fa-solid fa-filter"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Aktif Filtre Etiketleri / Temizle -->
-                {% if current_search or current_class or current_exam or current_file_type or (current_sort and current_sort != 'newest') %}
+                {% if current_search or current_department or current_class or current_exam or current_file_type or (current_sort and current_sort != 'newest') %}
                 <div class="d-flex align-items-center justify-content-between mt-3 pt-3 border-top flex-wrap gap-2">
                     <div class="d-flex align-items-center gap-2 flex-wrap">
                         <span class="small text-muted fw-bold">Aktif Filtreler:</span>
+                        {% if current_department %}
+                        <span class="badge bg-teal text-white border">
+                            <i class="fa-solid fa-building-columns me-1"></i>{{ current_department }}
+                        </span>
+                        {% endif %}
                         {% if current_search %}
                         <span class="badge bg-light text-dark border">
                             Arama: "{{ current_search }}"
@@ -216,9 +227,14 @@
                     <h3 class="note-card-title" title="{{ note.title }}">
                         {{ note.title }}
                     </h3>
-                    <div class="note-card-course-name">
-                        <i class="fa-solid fa-book-open fs-6"></i>
-                        <span>{{ note.course_name }}</span>
+                    <div class="note-card-course-name d-flex align-items-center justify-content-between flex-wrap gap-1">
+                        <div>
+                            <i class="fa-solid fa-book-open fs-6 text-teal me-1"></i>
+                            <span>{{ note.course_name }}</span>
+                        </div>
+                        <span class="badge bg-light text-secondary border small" style="font-size: 0.72rem;">
+                            {{ note.department }}
+                        </span>
                     </div>
 
                     <!-- Açıklama -->

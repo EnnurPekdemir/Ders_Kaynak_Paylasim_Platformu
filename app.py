@@ -11,7 +11,10 @@ from sqlalchemy import or_, desc, func
 
 from config import Config
 from models import db, Note
-from bologna_courses import BOLOGNA_COURSES, get_course_name, get_courses_by_class
+from bologna_courses import (
+    DEPARTMENTS, FACULTY_COURSES, get_courses_by_department, 
+    find_course, get_course_name, get_courses_by_class
+)
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -61,22 +64,31 @@ def get_file_extension(filename):
 
 @app.route('/')
 def index():
-    """Ana sayfa: Yalnızca onaylanmış notları listeleme, arama ve filtreleme."""
+    """Ana sayfa: Yalnızca onaylanmış notları listeleme, arama ve filtreleme (Bölüm destekli)."""
     query = Note.query.filter_by(is_approved=True)
 
     # Filtre parametreleri
     search_q = request.args.get('q', '').strip()
+    department = request.args.get('department', '').strip()
     class_level = request.args.get('class_level', '').strip()
     exam_type = request.args.get('exam_type', '').strip()
     file_type = request.args.get('file_type', '').strip()
     sort_by = request.args.get('sort', 'newest').strip()
 
-    # Arama filtresi (Ders Kodu, Ders Adı, Not Başlığı)
+    # Bölüm filtresi
+    if department:
+        if department in DEPARTMENTS.values():
+            query = query.filter(Note.department == department)
+        elif department in DEPARTMENTS:
+            query = query.filter(Note.department == DEPARTMENTS[department])
+
+    # Arama filtresi (Ders Kodu, Ders Adı, Not Başlığı, Bölüm)
     if search_q:
         search_filter = or_(
             Note.title.ilike(f'%{search_q}%'),
             Note.course_code.ilike(f'%{search_q}%'),
             Note.course_name.ilike(f'%{search_q}%'),
+            Note.department.ilike(f'%{search_q}%'),
             Note.description.ilike(f'%{search_q}%')
         )
         query = query.filter(search_filter)
@@ -121,6 +133,8 @@ def index():
         total_downloads=total_downloads,
         total_courses=total_courses,
         total_upvotes=total_upvotes,
+        departments=DEPARTMENTS,
+        current_department=department,
         current_search=search_q,
         current_class=class_level,
         current_exam=exam_type,
@@ -131,19 +145,24 @@ def index():
 
 @app.route('/not-yukle')
 def upload_page():
-    """Not yükleme formu sayfası (Bologna dersleri ile)."""
-    courses_list = sorted(BOLOGNA_COURSES.values(), key=lambda x: (x['semester'], x['code']))
-    return render_template('upload.html', bologna_courses=courses_list)
+    """Not yükleme formu sayfası (Teknoloji Fakültesi tüm bölümleri ile)."""
+    return render_template(
+        'upload.html', 
+        departments=DEPARTMENTS, 
+        faculty_courses=FACULTY_COURSES
+    )
 
 
 @app.route('/api/courses', methods=['GET'])
 def api_courses():
-    """Bologna ders kataloğu API'si."""
+    """Bologna ders kataloğu API'si (Bölüm ve Sınıf filtreli)."""
+    dept = request.args.get('department')
     level = request.args.get('class_level')
+    
+    courses = get_courses_by_department(dept)
     if level and level.isdigit():
-        courses = get_courses_by_class(int(level))
-    else:
-        courses = sorted(BOLOGNA_COURSES.values(), key=lambda x: (x['semester'], x['code']))
+        courses = [c for c in courses if c['class_level'] == int(level)]
+        
     return jsonify({
         'success': True,
         'count': len(courses),
@@ -278,14 +297,39 @@ def api_upload():
 
     # Form alanlarını al ve doğrula
     title = request.form.get('title', '').strip()
-    course_code = request.form.get('course_code', '').strip().upper()
+    department = request.form.get('department', '').strip()
     course_name = request.form.get('course_name', '').strip()
+    course_code = request.form.get('course_code', '').strip().upper()
     class_level_raw = request.form.get('class_level', '').strip()
     exam_type = request.form.get('exam_type', '').strip()
     description = request.form.get('description', '').strip()
 
-    if not title or not course_code or not course_name or not class_level_raw or not exam_type:
-        return jsonify({'success': False, 'message': 'Lütfen zorunlu tüm alanları eksiksiz doldurunuz.'}), 400
+    # Eğer ders kodu yazılmamışsa veya eksikse, ders adı veya katalogdan otomatik eşleştir
+    matched_course = None
+    if course_code:
+        matched_course = find_course(course_code)
+    if not matched_course and course_name:
+        matched_course = find_course(course_name)
+
+    if matched_course:
+        if not course_code:
+            course_code = matched_course['code']
+        if not course_name:
+            course_name = matched_course['name']
+        if not department:
+            department = matched_course['department_name']
+        if not class_level_raw:
+            class_level_raw = str(matched_course['class_level'])
+
+    if not course_code:
+        course_code = "GENEL"
+
+    if not department:
+        department = "Bilgisayar Mühendisliği"
+
+    # Zorunlu alan kontrolü (Artık ders kodunu ezberleyip yazmak zorunlu DEĞİL!)
+    if not title or not course_name or not class_level_raw or not exam_type:
+        return jsonify({'success': False, 'message': 'Lütfen zorunlu tüm alanları (Başlık, Ders, Sınıf, Sınav Türü) eksiksiz doldurunuz.'}), 400
 
     try:
         class_level = int(class_level_raw)
@@ -319,6 +363,7 @@ def api_upload():
     # Veritabanına kaydet (Varsayılan olarak onay bekliyor: is_approved=False)
     note = Note(
         title=title,
+        department=department,
         course_code=course_code,
         course_name=course_name,
         class_level=class_level,

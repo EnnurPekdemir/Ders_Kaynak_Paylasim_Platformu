@@ -29,6 +29,12 @@ def migrate_sqlite():
             conn.commit()
             print("[MİGRASYON] 'is_approved' kolonu başarıyla eklendi (mevcut kayıtlar onaylandı).")
 
+        if 'department' not in columns:
+            print("[MİGRASYON] 'department' kolonu tespit edilemedi, ekleniyor...")
+            cur.execute("ALTER TABLE notes ADD COLUMN department VARCHAR(100) DEFAULT 'Bilgisayar Mühendisliği' NOT NULL")
+            conn.commit()
+            print("[MİGRASYON] 'department' kolonu başarıyla eklendi.")
+
     conn.close()
 
 def init_database(reset=False):

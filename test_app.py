@@ -231,3 +231,39 @@ def test_api_bologna_courses(client):
     assert all(c['class_level'] == 1 for c in lvl1_data['courses'])
 
 
+def test_api_upload_without_course_code(client):
+    """Öğrencinin ders kodu girmeden sadece ders adıyla not yükleyebildiğini test eder."""
+    pdf_content = b"%PDF-1.4 test without code"
+    data = {
+        'title': 'Ders Kodu Olmadan Yüklenen Not',
+        'department': 'Elektrik-Elektronik Mühendisliği',
+        'course_name': 'Devre Analizi-1',
+        'class_level': '2',
+        'exam_type': 'Vize',
+        'file': (io.BytesIO(pdf_content), 'devre_notu.pdf')
+    }
+    response = client.post('/api/upload', data=data, content_type='multipart/form-data')
+    assert response.status_code == 201
+    json_data = response.get_json()
+    assert json_data['success'] is True
+
+    # Veritabanında ders kodunun otomatik dolduğunu doğrula
+    with app.app_context():
+        note = db.session.get(Note, json_data['note_id'])
+        assert note is not None
+        assert note.course_code != "" # Otomatik belirlendi
+        assert note.department == 'Elektrik-Elektronik Mühendisliği'
+
+
+def test_department_filtering(client):
+    """Bölüm filtresinin (Bilgisayar, Elektrik, Makine) doğru çalıştığını test eder."""
+    # Bilgisayar filtresi
+    res_ceng = client.get('/?department=Bilgisayar+M%C3%BChendisli%C4%9fi')
+    assert res_ceng.status_code == 200
+
+    # Makine filtresi
+    res_me = client.get('/?department=Makine+M%C3%BChendisli%C4%9fi')
+    assert res_me.status_code == 200
+
+
+

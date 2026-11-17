@@ -22,7 +22,9 @@ COLORS = [
 ]
 
 SAMPLE_NOTES = [
+    # --- BİLGİSAYAR MÜHENDİSLİĞİ ---
     {
+        "department": "Bilgisayar Mühendisliği",
         "course_code": "3301156",
         "course_name": "BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ",
         "class_level": 1,
@@ -36,19 +38,7 @@ SAMPLE_NOTES = [
         "report_count": 0
     },
     {
-        "course_code": "3301151",
-        "course_name": "MATEMATİK-1",
-        "class_level": 1,
-        "exam_type": "Final",
-        "title": "Limit, Süreklilik, Türev Alma Kuralları ve İntegral Formül Kartı",
-        "description": "Vize ve Finalde çıkabilecek tüm temel türev/integral kuralları, L'Hopital ve alan hesaplama örnek çözümleri.",
-        "file_type": "png",
-        "download_count": 215,
-        "upvotes": 52,
-        "downvotes": 2,
-        "report_count": 0
-    },
-    {
+        "department": "Bilgisayar Mühendisliği",
         "course_code": "3301256",
         "course_name": "PROGRAMLAMA DİLİ-1",
         "class_level": 1,
@@ -62,19 +52,7 @@ SAMPLE_NOTES = [
         "report_count": 0
     },
     {
-        "course_code": "3301351",
-        "course_name": "NESNEYE YÖNELİK PROGRAMLAMA DİLİ",
-        "class_level": 2,
-        "exam_type": "Vize",
-        "title": "Java OOP Prensipleri (Kapsülleme, Kalıtım, Polimorfizm, Arayüzler)",
-        "description": "Sınıf yapıları, soyut sınıflar, arayüzler ve örnek UML diyagramları ile pratik kod blokları.",
-        "file_type": "pdf",
-        "download_count": 178,
-        "upvotes": 47,
-        "downvotes": 1,
-        "report_count": 0
-    },
-    {
+        "department": "Bilgisayar Mühendisliği",
         "course_code": "3301354",
         "course_name": "VERİ YAPILARI VE UYGULAMALARI",
         "class_level": 2,
@@ -88,19 +66,7 @@ SAMPLE_NOTES = [
         "report_count": 0
     },
     {
-        "course_code": "3301353",
-        "course_name": "MANTIK DEVRELERİ-1",
-        "class_level": 2,
-        "exam_type": "Vize",
-        "title": "Karnaugh Haritaları (K-Map), Mantık Kapıları ve Flip-Floplar",
-        "description": "Boole cebri sadeleştirme kuralları, JK, D ve T flip-flop geçiş tabloları ve örnek vize soruları.",
-        "file_type": "jpg",
-        "download_count": 184,
-        "upvotes": 45,
-        "downvotes": 1,
-        "report_count": 0
-    },
-    {
+        "department": "Bilgisayar Mühendisliği",
         "course_code": "3301454",
         "course_name": "VERİTABANI YÖNETİM SİSTEMLERİ",
         "class_level": 2,
@@ -114,32 +80,7 @@ SAMPLE_NOTES = [
         "report_count": 1
     },
     {
-        "course_code": "3301551",
-        "course_name": "MİKROİŞLEMCİLER VE MİKRODENETLEYİCİLER",
-        "class_level": 3,
-        "exam_type": "Vize",
-        "title": "Assembly Dili, 8086 Mimarisi, Kesmeler (Interrupts) ve Kaydediciler",
-        "description": "Register yapıları, bellek segmentasyonu, çevrim komutları ve örnek mikrodenetleyici soru çözümleri.",
-        "file_type": "pdf",
-        "download_count": 195,
-        "upvotes": 53,
-        "downvotes": 1,
-        "report_count": 0
-    },
-    {
-        "course_code": "3301553",
-        "course_name": "VERİ HABERLEŞMESİ VE AĞLAR",
-        "class_level": 3,
-        "exam_type": "Vize",
-        "title": "OSI ve TCP/IP Katmanları, IP Subnetting (Alt Ağlara Bölme)",
-        "description": "CIDR hesaplamaları, TCP 3-Way Handshake, DNS/DHCP protokolleri ve yönlendirme algoritmaları.",
-        "file_type": "png",
-        "download_count": 220,
-        "upvotes": 58,
-        "downvotes": 1,
-        "report_count": 0
-    },
-    {
+        "department": "Bilgisayar Mühendisliği",
         "course_code": "3301651",
         "course_name": "YAPAY ZEKA",
         "class_level": 3,
@@ -152,17 +93,148 @@ SAMPLE_NOTES = [
         "downvotes": 2,
         "report_count": 0
     },
+
+    # --- ELEKTRİK-ELEKTRONİK MÜHENDİSLİĞİ ---
     {
-        "course_code": "3301786",
-        "course_name": "TOPLUMA HİZMET UYGULAMALARI",
-        "class_level": 4,
-        "exam_type": "Genel",
-        "title": "Topluma Hizmet Proje Tasarımı, Açık Kaynak Akademik Dayanışma Raporu",
-        "description": "Selçuk Üniversitesi Bilgisayar Mühendisliği öğrencileri arası kaynak paylaşımı ve toplumsal fayda modelleme çalışması.",
+        "department": "Elektrik-Elektronik Mühendisliği",
+        "course_code": "3302157",
+        "course_name": "ELEKTRİK-ELEKTRONİK MÜH. GİRİŞ",
+        "class_level": 1,
+        "exam_type": "Vize",
+        "title": "Temel Elektrik Kavramları, Akım, Gerilim ve Güç Bağıntıları",
+        "description": "Ohm Yasası, Kirchhoff Akım ve Gerilim Yasaları, temel devre elemanları ve ölçüm aletleri özeti.",
         "file_type": "pdf",
-        "download_count": 188,
-        "upvotes": 64,
+        "download_count": 115,
+        "upvotes": 31,
         "downvotes": 0,
+        "report_count": 0
+    },
+    {
+        "department": "Elektrik-Elektronik Mühendisliği",
+        "course_code": "3302352",
+        "course_name": "DEVRE ANALİZİ-1",
+        "class_level": 2,
+        "exam_type": "Vize",
+        "title": "Düğüm Gerilimleri, Çevre Akımları, Thevenin ve Norton Teoremleri",
+        "description": "Devre analizi yöntemleri, süperpozisyon teoremi, bağımlı kaynaklı devreler ve çözümlü vize soruları.",
+        "file_type": "pdf",
+        "download_count": 240,
+        "upvotes": 68,
+        "downvotes": 2,
+        "report_count": 0
+    },
+    {
+        "department": "Elektrik-Elektronik Mühendisliği",
+        "course_code": "3302353",
+        "course_name": "ELEKTRONİK-1",
+        "class_level": 2,
+        "exam_type": "Final",
+        "title": "Diyot Karakteristiği, Zener Diyotlar, BJT ve MOSFET Kutuplama",
+        "description": "Yarı iletken fiziği, doğrultucu devreler, BJT transistör çalışma bölgeleri ve küçük sinyal eşdeğer modelleri.",
+        "file_type": "jpg",
+        "download_count": 195,
+        "upvotes": 52,
+        "downvotes": 1,
+        "report_count": 0
+    },
+    {
+        "department": "Elektrik-Elektronik Mühendisliği",
+        "course_code": "3302355",
+        "course_name": "ELEKTROMANYETİK ALAN TEORİSİ",
+        "class_level": 2,
+        "exam_type": "Vize",
+        "title": "Vektör Analizi, Coulomb ve Gauss Yasaları, Elektrostatik Potansiyel",
+        "description": "Kartezyen, silindirik ve küresel koordinat sistemleri, diverjans, gradyen, curl işlemleri ve Laplace denklemi.",
+        "file_type": "pdf",
+        "download_count": 160,
+        "upvotes": 44,
+        "downvotes": 2,
+        "report_count": 0
+    },
+    {
+        "department": "Elektrik-Elektronik Mühendisliği",
+        "course_code": "3302553",
+        "course_name": "GÜÇ ELEKTRONİĞİ",
+        "class_level": 3,
+        "exam_type": "Final",
+        "title": "Tristörler, Kontrollü Doğrultucular, DC-DC Kıyıcılar (Buck/Boost)",
+        "description": "Anahtarlama kayıpları, PWM tekniği, inverter topolojileri ve endüstriyel güç devreleri formül kartı.",
+        "file_type": "png",
+        "download_count": 180,
+        "upvotes": 49,
+        "downvotes": 1,
+        "report_count": 0
+    },
+
+    # --- MAKİNE MÜHENDİSLİĞİ ---
+    {
+        "department": "Makine Mühendisliği",
+        "course_code": "3303115",
+        "course_name": "MAKİNE MÜHENDİSLİĞİNE GİRİŞ",
+        "class_level": 1,
+        "exam_type": "Vize",
+        "title": "Mühendislik Birimleri, Kuvvet Sistemleri ve Temel İmalat Yöntemleri",
+        "description": "SI birim sistemi dönüşümleri, mesleki etik, talaşlı ve talaşsız imalat süreçleri genel bakış.",
+        "file_type": "pdf",
+        "download_count": 105,
+        "upvotes": 29,
+        "downvotes": 0,
+        "report_count": 0
+    },
+    {
+        "department": "Makine Mühendisliği",
+        "course_code": "3303121",
+        "course_name": "TEKNİK RESİM-1",
+        "class_level": 1,
+        "exam_type": "Vize",
+        "title": "Görünüş Çıkarma, Ölçülendirme Kuralları ve Kesit Alma Yöntemleri",
+        "description": "İzometrik ve eğik izdüşüm, standart çizgiler, geometrik toleranslar ve teknik çizim kuralları rehberi.",
+        "file_type": "pdf",
+        "download_count": 225,
+        "upvotes": 63,
+        "downvotes": 1,
+        "report_count": 0
+    },
+    {
+        "department": "Makine Mühendisliği",
+        "course_code": "3303305",
+        "course_name": "STATİK",
+        "class_level": 2,
+        "exam_type": "Vize",
+        "title": "Maddi Noktaların Dengesi, Rijit Cisimler, Kafes Sistemler ve Sürtünme",
+        "description": "Serbest cisim diyagramı (SCD), mesnet tepkileri, ağırlık merkezi ve düğüm noktaları analiz yöntemleri.",
+        "file_type": "pdf",
+        "download_count": 280,
+        "upvotes": 79,
+        "downvotes": 2,
+        "report_count": 0
+    },
+    {
+        "department": "Makine Mühendisliği",
+        "course_code": "3303302",
+        "course_name": "TERMODİNAMİK-1",
+        "class_level": 2,
+        "exam_type": "Final",
+        "title": "Termodinamiğin 1. ve 2. Yasaları, Kapalı ve Açık Sistem Analizleri",
+        "description": "Saf maddelerin özellikleri, buhar tabloları kullanımı, entropi değişimi ve Carnot çevrimi problem çözümleri.",
+        "file_type": "png",
+        "download_count": 315,
+        "upvotes": 88,
+        "downvotes": 3,
+        "report_count": 0
+    },
+    {
+        "department": "Makine Mühendisliği",
+        "course_code": "3303502",
+        "course_name": "AKIŞKANLAR MEKANİĞİ",
+        "class_level": 3,
+        "exam_type": "Final",
+        "title": "Akışkan Statiği, Bernoulli Denklemi ve Borularda Sürtünme Kayıpları",
+        "description": "Manometre hesaplamaları, kontrol hacmi kütle/momentum korunumu, Moody diyagramı ve laminer/türbülanslı akış.",
+        "file_type": "pdf",
+        "download_count": 250,
+        "upvotes": 72,
+        "downvotes": 1,
         "report_count": 0
     }
 ]
@@ -279,6 +351,7 @@ def seed():
 
             note = Note(
                 title=item['title'],
+                department=item.get('department', 'Bilgisayar Mühendisliği'),
                 course_code=item['course_code'],
                 course_name=item['course_name'],
                 class_level=item['class_level'],
