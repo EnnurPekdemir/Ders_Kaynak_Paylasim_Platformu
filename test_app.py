@@ -214,3 +214,20 @@ def test_admin_login_and_approval_flow(client):
     res_index_after = client.get('/')
     assert b"Onay Bekleyen Algoritma Notu" in res_index_after.data
 
+
+def test_api_bologna_courses(client):
+    """Bologna ders kataloğu API'sinin doğru çalıştığını test eder."""
+    response = client.get('/api/courses')
+    assert response.status_code == 200
+    json_data = response.get_json()
+    assert json_data['success'] is True
+    assert json_data['count'] >= 100
+    
+    # 1. sınıf filtresi
+    res_lvl1 = client.get('/api/courses?class_level=1')
+    assert res_lvl1.status_code == 200
+    lvl1_data = res_lvl1.get_json()
+    assert lvl1_data['success'] is True
+    assert all(c['class_level'] == 1 for c in lvl1_data['courses'])
+
+

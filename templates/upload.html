@@ -65,41 +65,39 @@
                     <!-- DERS KODU VE DERS ADI -->
                     <div class="row g-3 mb-3">
                         <div class="col-md-5">
-                            <label for="course_code" class="form-label fw-bold small text-dark">Ders Kodu *</label>
+                            <label for="course_code" class="form-label fw-bold small text-dark">
+                                Ders Kodu * <span class="badge bg-light text-teal border ms-1">Bologna Uyumlu</span>
+                            </label>
                             <input 
                                 type="text" 
                                 class="form-control" 
                                 id="course_code" 
                                 name="course_code" 
-                                placeholder="Örn: BIL201" 
+                                placeholder="Örn: 3301156 veya BIL101" 
                                 list="courseSuggestions"
                                 required
                                 autocomplete="off"
                             >
                             <datalist id="courseSuggestions">
-                                <option value="BIL101">BIL101 - Programlamaya Giriş</option>
-                                <option value="BIL103">BIL103 - Bilgisayar Mühendisliğine Giriş</option>
-                                <option value="BIL105">BIL105 - Matematik I</option>
-                                <option value="BIL107">BIL107 - Fizik I</option>
-                                <option value="BIL102">BIL102 - Nesne Yönelimli Programlama</option>
-                                <option value="BIL104">BIL104 - Matematik II</option>
-                                <option value="BIL201">BIL201 - Veri Yapıları</option>
-                                <option value="BIL203">BIL203 - Sayısal Mantık Tasarımı</option>
-                                <option value="BIL205">BIL205 - Diferansiyel Denklemler</option>
-                                <option value="BIL202">BIL202 - Algoritma Analizi</option>
-                                <option value="BIL204">BIL204 - Elektrik ve Elektronik Devreler</option>
-                                <option value="BIL301">BIL301 - İşletim Sistemleri</option>
-                                <option value="BIL303">BIL303 - Veritabanı Sistemleri</option>
-                                <option value="BIL305">BIL305 - Bilgisayar Mimarisi</option>
-                                <option value="BIL302">BIL302 - Bilgisayar Ağları</option>
-                                <option value="BIL304">BIL304 - Yazılım Mühendisliği</option>
-                                <option value="BIL306">BIL306 - Web Teknolojileri</option>
-                                <option value="BIL401">BIL401 - Makine Öğrenmesi</option>
-                                <option value="BIL403">BIL403 - Derleyici Tasarımı</option>
-                                <option value="BIL405">BIL405 - Dağıtık Sistemler</option>
-                                <option value="BIL407">BIL407 - Yapay Zeka</option>
-                                <option value="BIL402">BIL402 - Bilgi Güvenliği ve Kriptoloji</option>
+                                {% if bologna_courses %}
+                                    {% for c in bologna_courses %}
+                                    <option value="{{ c.code }}">{{ c.code }} - {{ c.name }} ({{ c.class_level }}. Sınıf)</option>
+                                    {% endfor %}
+                                {% else %}
+                                    <option value="3301156">3301156 - BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ</option>
+                                    <option value="3301151">3301151 - MATEMATİK-1</option>
+                                    <option value="3301256">3301256 - PROGRAMLAMA DİLİ-1</option>
+                                    <option value="3301351">3301351 - NESNEYE YÖNELİK PROGRAMLAMA DİLİ</option>
+                                    <option value="3301354">3301354 - VERİ YAPILARI VE UYGULAMALARI</option>
+                                    <option value="3301454">3301454 - VERİTABANI YÖNETİM SİSTEMLERİ</option>
+                                    <option value="3301551">3301551 - MİKROİŞLEMCİLER VE MİKRODENETLEYİCİLER</option>
+                                    <option value="3301651">3301651 - YAPAY ZEKA</option>
+                                    <option value="3301786">3301786 - TOPLUMA HİZMET UYGULAMALARI</option>
+                                {% endif %}
                             </datalist>
+                            <div class="form-text small text-muted">
+                                Selçuk Üniversitesi Bologna ders kodunu (3301...) veya adını yazmaya başladığınızda otomatik önerilir.
+                            </div>
                         </div>
                         <div class="col-md-7">
                             <label for="course_name" class="form-label fw-bold small text-dark">Ders Adı *</label>
@@ -108,7 +106,7 @@
                                 class="form-control" 
                                 id="course_name" 
                                 name="course_name" 
-                                placeholder="Örn: Veri Yapıları" 
+                                placeholder="Ders kodu girildiğinde otomatik dolar" 
                                 required
                             >
                         </div>

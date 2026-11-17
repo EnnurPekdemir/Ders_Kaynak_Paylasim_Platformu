@@ -11,6 +11,7 @@ from sqlalchemy import or_, desc, func
 
 from config import Config
 from models import db, Note
+from bologna_courses import BOLOGNA_COURSES, get_course_name, get_courses_by_class
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -130,8 +131,24 @@ def index():
 
 @app.route('/not-yukle')
 def upload_page():
-    """Not yükleme formu sayfası."""
-    return render_template('upload.html')
+    """Not yükleme formu sayfası (Bologna dersleri ile)."""
+    courses_list = sorted(BOLOGNA_COURSES.values(), key=lambda x: (x['semester'], x['code']))
+    return render_template('upload.html', bologna_courses=courses_list)
+
+
+@app.route('/api/courses', methods=['GET'])
+def api_courses():
+    """Bologna ders kataloğu API'si."""
+    level = request.args.get('class_level')
+    if level and level.isdigit():
+        courses = get_courses_by_class(int(level))
+    else:
+        courses = sorted(BOLOGNA_COURSES.values(), key=lambda x: (x['semester'], x['code']))
+    return jsonify({
+        'success': True,
+        'count': len(courses),
+        'courses': courses
+    })
 
 
 @app.route('/istatistikler')
